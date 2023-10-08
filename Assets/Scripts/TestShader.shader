@@ -1,27 +1,26 @@
 Shader "Custom/TestShader"
 {
-    Properties
-    {
-    }
+    Properties {}
 
     SubShader
     {
-        Tags {
-            "RenderType" = "Opaque" 
-            "RenderPipeline" = "UniversalPipeline" 
+        Tags
+        {
+            "RenderType" = "Opaque"
+            "RenderPipeline" = "UniversalPipeline"
             "Queue" = "Geometry"
         }
 
 
         Pass
         {
-           Name "OmaPass"
+            Name "OmaPass"
             Tags
             {
-            "LightMode" = "UniversalForward"
+                "LightMode" = "UniversalForward"
             }
 
-        HLSLPROGRAM
+            HLSLPROGRAM
 
 
 
