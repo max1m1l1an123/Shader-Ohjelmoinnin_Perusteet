@@ -1,27 +1,26 @@
 Shader "Custom/TestShader"
 {
-    Properties
-    {
-    }
+    Properties {}
 
     SubShader
     {
-        Tags {
-            "RenderType" = "Opaque" 
-            "RenderPipeline" = "UniversalPipeline" 
+        Tags
+        {
+            "RenderType" = "Opaque"
+            "RenderPipeline" = "UniversalPipeline"
             "Queue" = "Geometry"
         }
 
 
         Pass
         {
-           Name "OmaPass"
+            Name "OmaPass"
             Tags
             {
-            "LightMode" = "UniversalForward"
+                "LightMode" = "UniversalForward"
             }
 
-        HLSLPROGRAM
+            HLSLPROGRAM
 
 
 
@@ -33,11 +32,15 @@ Shader "Custom/TestShader"
         struct Attributes
         {
              float3 positionOS : POSITION;
+             
+                float3 normalOS : NORMAL;
         };
 
         struct Varyings
         {
              float4 positionHCS : POSITION;
+             
+             float4 normalHCS : NORMAL;
         };
 
         Varyings Vert(const Attributes input)
@@ -53,6 +56,7 @@ Shader "Custom/TestShader"
         {
             return half4(1, 0.5, 0.3, 1);
         }
+
 
         ENDHLSL
         }
