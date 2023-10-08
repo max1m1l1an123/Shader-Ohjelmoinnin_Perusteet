@@ -59,7 +59,7 @@ Shader "Custom/TestShader"
             // return half4(1, 0.5, 0.3, 1);
             
             half4 color = 0;
-            color.rgb = input.normalHCS;
+            color.rgb = input.normalHCS * 0.5 + 0.5;
             return color;
         }
 
