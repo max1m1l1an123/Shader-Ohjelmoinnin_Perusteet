@@ -40,7 +40,7 @@ Shader "Custom/TestShader"
         {
              float4 positionHCS : POSITION;
              
-             float4 normalHCS : NORMAL;
+             float3 normalHCS : TEXCOORD0;
         };
 
         Varyings Vert(const Attributes input)
@@ -49,12 +49,18 @@ Shader "Custom/TestShader"
     
             output.positionHCS = TransformObjectToHClip(input.positionOS);
     
+            output.normalHCS = TransformObjectToWorldNormal(input.normalOS);
+    
             return output;
         }
 
         half4 Frag(const Varyings input) : SV_TARGET
         {
-            return half4(1, 0.5, 0.3, 1);
+            // return half4(1, 0.5, 0.3, 1);
+            
+            half4 color = 0;
+            color.rgb = input.normalHCS;
+            return color;
         }
 
 
