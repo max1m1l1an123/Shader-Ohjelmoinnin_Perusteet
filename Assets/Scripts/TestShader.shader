@@ -1,6 +1,9 @@
 Shader "Custom/TestShader"
 {
-    Properties {}
+    Properties
+    {
+        _MaterialColor ("Color", Color) = (1, 0.5, 0.3, 1)
+    }
 
     SubShader
     {
@@ -21,50 +24,50 @@ Shader "Custom/TestShader"
             }
 
             HLSLPROGRAM
+            #pragma vertex Vert
+            #pragma fragment Frag
 
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/core.hlsl"
 
+            struct Attributes
+            {
+                float3 positionOS : POSITION;
 
-        #pragma vertex Vert
-        #pragma fragment Frag
-
-        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/core.hlsl"
-
-        struct Attributes
-        {
-             float3 positionOS : POSITION;
-             
                 float3 normalOS : NORMAL;
-        };
+            };
 
-        struct Varyings
-        {
-             float4 positionHCS : POSITION;
-             
-             float3 normalHCS : TEXCOORD0;
-        };
+            struct Varyings
+            {
+                float4 positionHCS : POSITION;
 
-        Varyings Vert(const Attributes input)
-        {
-            Varyings output;
-    
-            output.positionHCS = TransformObjectToHClip(input.positionOS);
-    
-            output.normalHCS = TransformObjectToWorldNormal(input.normalOS);
-    
-            return output;
-        }
+                float3 normalWS : TEXCOORD0;
+            };
 
-        half4 Frag(const Varyings input) : SV_TARGET
-        {
-            // return half4(1, 0.5, 0.3, 1);
-            
-            half4 color = 0;
-            color.rgb = input.normalHCS * 0.5 + 0.5;
-            return color;
-        }
+            Varyings Vert(const Attributes input)
+            {
+                Varyings output;
 
+                output.positionHCS = TransformObjectToHClip(input.positionOS);
 
-        ENDHLSL
+                output.normalWS = TransformObjectToWorldNormal(input.normalOS);
+
+                return output;
+            }
+
+            half4 Frag(const Varyings input) : SV_TARGET
+            {
+                // return half4(1, 0.5, 0.3, 1);
+
+                // -------------- trying to return _MaterialColor  v
+                // half4 color = tex2D(input)._MaterialColor;
+                // return color;
+                // -------------- trying to return _MaterialColor  ^
+                
+                half4 color = 0;
+                color.rgb = input.normalWS * 0.5 + 0.5;
+                return color;
+            }
+            ENDHLSL
         }
     }
 }
