@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 Shader "Custom/TextureColorShader"
 {
     Properties
@@ -19,13 +17,22 @@ Shader "Custom/TextureColorShader"
 
         Pass
         {
+            Name "OmaPass"
+            Tags
+            {
+                "LightMode" = "UniversalForward"
+            }
+            
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "UnityCG.cginc"
-            // #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/core.hlsl"
-            // #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/lighting.hlsl"
+            // #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/lighting.hlsl"
+
+            TEXTURE2D (_MainTex);
+            SAMPLER (sampler_MainTex);
 
             struct appdata_t
             {
@@ -39,21 +46,17 @@ Shader "Custom/TextureColorShader"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float _Position;
-
             v2f vert(appdata_t v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = mul(UNITY_MATRIX_MVP,v.vertex);
                 o.uv = v.uv;
                 return o;
             }
 
             half4 frag(v2f i) : SV_Target
             {
-                half4 texColor = tex2D(_MainTex, i.uv);
-                return lerp(texColor, half4(1, 1, 1, 1), _Position);
+                return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
             }
             ENDHLSL
         }
