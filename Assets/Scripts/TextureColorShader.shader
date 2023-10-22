@@ -57,7 +57,7 @@ Shader "Custom/TextureColorShader"
             half4 frag(v2f i) : SV_Target
             {
                 return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-            }
+            } 
             ENDHLSL
         }
         // --------------  DepthOnly pass v
