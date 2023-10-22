@@ -4,6 +4,7 @@ Shader "Custom/TextureColorShader"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Position ("Position", Range(0, 1)) = 0.5
+        
     }
 
     SubShader
@@ -34,6 +35,10 @@ Shader "Custom/TextureColorShader"
             TEXTURE2D (_MainTex);
             SAMPLER (sampler_MainTex);
 
+            CBUFFER_START(UnityPerMaterial)
+            float4 _MainTex_ST;
+            CBUFFER_END
+            
             struct appdata_t
             {
                 float4 vertex : POSITION;
@@ -50,14 +55,14 @@ Shader "Custom/TextureColorShader"
             {
                 v2f o;
                 o.vertex = mul(UNITY_MATRIX_MVP,v.vertex);
-                o.uv = v.uv;
+                o.uv = v.uv * _MainTex_ST.xy + _MainTex_ST.zw + _Time.y * float2(0.5,0.1);
                 return o;
             }
 
             half4 frag(v2f i) : SV_Target
             {
                 return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-            } 
+            }
             ENDHLSL
         }
         // --------------  DepthOnly pass v
