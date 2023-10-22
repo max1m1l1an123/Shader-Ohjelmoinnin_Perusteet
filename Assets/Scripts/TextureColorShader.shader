@@ -10,7 +10,10 @@ Shader "Custom/TextureColorShader"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags
+        {
+            "RenderType"="Opaque"
+        }
         LOD 100
 
         Pass
@@ -51,46 +54,49 @@ Shader "Custom/TextureColorShader"
             }
             ENDHLSL
         }
-// --------------  DepthOnly pass v
-Pass
-{
-    Name "Depth"
-    Tags { "LightMode" = "DepthOnly" }
-    
-    Cull Back
-    ZTest LEqual
-    ZWrite On
-    ColorMask R
-    
-    HLSLPROGRAM
-    
-    #pragma vertex DepthVert
-    #pragma fragment DepthFrag
+        // --------------  DepthOnly pass v
+        Pass
+        {
+            Name "Depth"
+            Tags
+            {
+                "LightMode" = "DepthOnly"
+            }
 
-     #include "DepthPass.hlsl"
-     ENDHLSL
-}
-// --------------  DepthOnly pass        ^
-// --------------  DepthNormalsOnly pass v
-Pass
-{
-    Name "Normals"
-    Tags { "LightMode" = "DepthNormalsOnly" }
-    
-    Cull Back
-    ZTest LEqual
-    ZWrite On
-    
-    HLSLPROGRAM
-    
-    #pragma vertex DepthNormalsVert
-    #pragma fragment DepthNormalsFrag
+            Cull Back
+            ZTest LEqual
+            ZWrite On
+            ColorMask R
 
-    #include "DepthNormalsPass.hlsl"
-    
-    ENDHLSL
-}
-// --------------  DepthNormalsOnly pass ^
+            HLSLPROGRAM
+            #pragma vertex DepthVert
+            #pragma fragment DepthFrag
+
+            #include "DepthPass.hlsl"
+            ENDHLSL
+        }
+        // --------------  DepthOnly pass        ^
+        // --------------  DepthNormalsOnly pass v
+        Pass
+        {
+            Name "Normals"
+            Tags
+            {
+                "LightMode" = "DepthNormalsOnly"
+            }
+
+            Cull Back
+            ZTest LEqual
+            ZWrite On
+
+            HLSLPROGRAM
+            #pragma vertex DepthNormalsVert
+            #pragma fragment DepthNormalsFrag
+
+            #include "DepthNormalsPass.hlsl"
+            ENDHLSL
+        }
+        // --------------  DepthNormalsOnly pass ^
 
     }
 }
