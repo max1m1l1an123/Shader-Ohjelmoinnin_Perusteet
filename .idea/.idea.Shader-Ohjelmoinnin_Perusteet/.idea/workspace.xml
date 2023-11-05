@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e69b943b-0168-4152-9e0b-d92306f5b49e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Shader-Ohjelmoinnin_Perusteet/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Shader-Ohjelmoinnin_Perusteet/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TextureSamplerShader.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TextureSamplerShader.shader" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/wet-mossy-rocks-unity/wet-mossy-rocks_normal-ogl.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/wet-mossy-rocks-unity/wet-mossy-rocks_normal-ogl.png.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +16,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Controllers/BallController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CoordinateShader.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TestShader.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TextureColorShader.shader" root0="FORCE_HIGHLIGHTING" />
@@ -42,7 +42,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -105,6 +105,8 @@
       <workItem from="1698597034879" duration="2941000" />
       <workItem from="1698600044667" duration="1611000" />
       <workItem from="1698602330100" duration="2306000" />
+      <workItem from="1699168748723" duration="7595000" />
+      <workItem from="1699194586974" duration="2640000" />
     </task>
     <servers />
   </component>
