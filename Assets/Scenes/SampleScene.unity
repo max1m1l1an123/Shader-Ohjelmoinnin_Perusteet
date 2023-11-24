@@ -1297,7 +1297,7 @@ GameObject:
   - component: {fileID: 1003875663}
   - component: {fileID: 1003875662}
   m_Layer: 0
-  m_Name: 20.11._Final_Task
+  m_Name: 20.11._Final_Task_Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,7 +1421,7 @@ GameObject:
   - component: {fileID: 1111256036}
   - component: {fileID: 1111256035}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: 20.11._Final_Task_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

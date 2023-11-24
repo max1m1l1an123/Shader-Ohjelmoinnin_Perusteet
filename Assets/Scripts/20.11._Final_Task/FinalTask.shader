@@ -1,4 +1,4 @@
-Shader "Unlit/FinalTask"
+Shader "Custom/FinalTask"
 {
     Properties
     {
@@ -11,13 +11,19 @@ Shader "Unlit/FinalTask"
 
         Pass
         {
+            Name "ForwardLit"
+            Tags { "LightMode" = "UniversalForward" }
+
+            Cull Back
+            Blend One Zero
+            ZTest LEqual
+            ZWrite On
+            
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fog
-
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            #include "UnityCG.cginc"
+            
+            #include "UnityCG.cginc" // for texture sampling
 
             CBUFFER_START(UnityPerMaterial)
             Texture2D _blackUVTexture;
@@ -33,7 +39,7 @@ Shader "Unlit/FinalTask"
             {
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
-                float4 vertex : SV_POSITION;
+                float4 pos : POSITION;
             };
 
             sampler2D sampler_blackUVTexture;
@@ -41,22 +47,19 @@ Shader "Unlit/FinalTask"
             float4 sampler_blackUVTexture_ST;
             float4 sampler_whiteUVTexture_ST;
 
-            varyings vert (attributes v)
+            varyings vert (attributes input)
             {
-                varyings o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, sampler_blackUVTexture);
-                UNITY_TRANSFER_FOG(o,o.vertex);
-                return o;
+                varyings output;
+                output.pos = UnityObjectToClipPos(input.vertex);
+                output.uv = input.uv;
+                UNITY_TRANSFER_FOG(output, output.pos);
+                return output;
             }
-
-            float4 frag (varyings i) : SV_Target
+            float4 frag (varyings input) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_blackUVTexture, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                half4 color = tex2D(sampler_blackUVTexture, input.uv);
+                UNITY_APPLY_FOG(input.fogCoord, color);
+                return color;
             }
             ENDHLSL
         }
