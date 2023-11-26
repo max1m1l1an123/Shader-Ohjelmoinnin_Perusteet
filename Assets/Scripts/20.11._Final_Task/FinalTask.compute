@@ -5,6 +5,10 @@
 // with cs.SetTexture
 RWTexture2D<float4> Result;
 
+
+int CellColour;
+int State1;
+
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
@@ -32,9 +36,9 @@ void Update2(uint3 id : SV_DispatchThreadID)
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 // Shaderin tulisi sisältää kernel jokaiselle seedille jota scriptissä voi valita aloitukseen.
-#pragma kernel KernelForEverySeed
+#pragma kernel ForEverySeed
 [numthreads(8, 8, 1)]
-void KernelForEverySeed(uint3 id : SV_DispatchThreadID)
+void ForEverySeed(uint3 id : SV_DispatchThreadID)
 {
     
 }
@@ -43,9 +47,23 @@ void KernelForEverySeed(uint3 id : SV_DispatchThreadID)
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 // Shaderin tulisi sisältää funktio Game of Lifen solun päivitykselle.
-void UpdateGameOfLife()
+void UpdateGameOfLife(int seed)
 {
     
 }
 // Shaderin tulisi sisältää funktio Game of Lifen solun päivitykselle.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+// FullTexture seed to initialize the simulation so that it is stable, stable meaning that the simulation no longer changes
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#pragma kernel InitFullTexture
+[numthreads(8, 8, 1)]
+void InitFullTexture(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x % 7 == 0 || id.y % 3 == 0)
+    {
+        State1[id.xy] = CellColour;
+    }
+}
+// FullTexture seed to initialize the simulation so that it is stable, stable meaning that the simulation no longer changes
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
