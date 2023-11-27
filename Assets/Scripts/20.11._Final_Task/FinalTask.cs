@@ -8,14 +8,16 @@ public class FinalTask : MonoBehaviour
     [SerializeField] private ComputeShader finalTaskShader;
     [SerializeField] private Material finalTaskMaterial;
     
-    [SerializeField] private RenderTexture blackUVTexture;
     [SerializeField] private RenderTexture whiteUVTexture;
-
+    [SerializeField] private RenderTexture blackUVTexture;
     
     [SerializeField] private Seed seed = Seed.InitFullTexture; // seed ei ole numero vaan esim open teamsiin laittamat jännät scriptit on seedejä
     [SerializeField] private float updateIntervalSeconds = 2f;
     [SerializeField] private Stage currentStage;
 
+    private int textureWidth = 512;
+    private int textureHeight = 512;
+    
     private enum Seed
     {
         InitFullTexture,
@@ -58,28 +60,23 @@ public class FinalTask : MonoBehaviour
             }
         }
         #endregion Generate tiles
-
-        int textureWidth = 512;
-        int textureHeight = 512;
+        
         // create 2 RenderTextures using default LDR settings, point filter and enableRandomWrite = true.
         #region implementation
         // Create white UV texture
-        whiteUVTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGB32);
+        whiteUVTexture = new RenderTexture(textureWidth, textureHeight, 24);
         whiteUVTexture.enableRandomWrite = true;
         whiteUVTexture.filterMode = FilterMode.Point;
         whiteUVTexture.Create();
         
-        finalTaskShader.SetTexture(0, "White", whiteUVTexture);
-        // finalTaskShader.Dispatch(0,
-        
         // Create black UV texture
-        blackUVTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGB32);
+        blackUVTexture = new RenderTexture(textureWidth, textureHeight, 24);
         blackUVTexture.enableRandomWrite = true;
         blackUVTexture.filterMode = FilterMode.Point;
         blackUVTexture.Create();
         #endregion implementation
 
-
+        OnRenderImage(whiteUVTexture, whiteUVTexture);
 
         // find all kernels of Compute Shader
         _mainKernel = finalTaskShader.FindKernel("CSMain");
@@ -181,6 +178,23 @@ public class FinalTask : MonoBehaviour
             }
         }
         return liveneighbours;
+    }
+
+    private void OnRenderImage(RenderTexture src, RenderTexture dest)
+    {
+        if (whiteUVTexture == null)
+        {
+            whiteUVTexture = new RenderTexture(textureWidth, textureHeight, 24);
+            whiteUVTexture.enableRandomWrite = true;
+            whiteUVTexture.filterMode = FilterMode.Point;
+            whiteUVTexture.Create();
+        }
+        
+        finalTaskShader.SetTexture(finalTaskShader.FindKernel("CSMain"), "White", whiteUVTexture);
+        finalTaskShader.SetFloat("Resolution", whiteUVTexture.width);
+        finalTaskShader.Dispatch(0, whiteUVTexture.width / 8, whiteUVTexture.height / 8, 1);
+
+        Graphics.Blit(whiteUVTexture, dest);
     }
 
     // TODO: initialize the simulation using seed variable 

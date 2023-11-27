@@ -14,7 +14,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/20.11._Scripts/UVVisualizer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/20.11._Final_Task/teacherscode/GameOfLife.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Controllers/BallController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CoordinateShader.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TestShader.shader" root0="FORCE_HIGHLIGHTING" />
@@ -121,6 +121,8 @@
       <workItem from="1700827749672" duration="3821000" />
       <workItem from="1700999337645" duration="6102000" />
       <workItem from="1701087660895" duration="2966000" />
+      <workItem from="1701091206713" duration="9224000" />
+      <workItem from="1701357503496" duration="333000" />
     </task>
     <servers />
   </component>

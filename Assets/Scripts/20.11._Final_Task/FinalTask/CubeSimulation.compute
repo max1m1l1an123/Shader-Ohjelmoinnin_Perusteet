@@ -3,62 +3,39 @@
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
-RWTexture2D<float4> Result;
+float4 CellColour;
+RWTexture2D<float4> State1;
 
-float Resolution;
-
-int CellColour;
-int State1;
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
     // TODO: insert actual code here!
-    float x = id.x / Resolution;
-    float y = id.y / Resolution;
 
-    Result[id.xy] = float4(x, y, 0.0, 0.0);
+    CellColour[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
 }
 
-// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-// Compute Shaderin tulisi sisältää kaksi kerneliä Update1 ja Update2, jotka päivittävät simulaatiota vuorotellen
-#pragma kernel Update1
-[numthreads(8, 8, 1)]
-void Update1(uint3 id : SV_DispatchThreadID)
+#pragma kernel Simulate
+[numthreads(8,8,1)]
+void Simulate()
 {
     
 }
-#pragma kernel Update2
-[numthreads(8, 8, 1)]
-void Update2(uint3 id : SV_DispatchThreadID)
-{
-    
-}
-// Compute Shaderin tulisi sisältää kaksi kerneliä Update1 ja Update2, jotka päivittävät simulaatiota vuorotellen
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-// Shaderin tulisi sisältää kernel jokaiselle seedille jota scriptissä voi valita aloitukseen.
-#pragma kernel ForEverySeed
-[numthreads(8, 8, 1)]
-void ForEverySeed(uint3 id : SV_DispatchThreadID)
+bool IsCellAlive(float4 cell)
 {
-    
+    return cell.x + cell.y + cell.z + cell.w > 0;
 }
-// Shaderin tulisi sisältää kernel jokaiselle seedille jota scriptissä voi valita aloitukseen.
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-// Shaderin tulisi sisältää funktio Game of Lifen solun päivitykselle.
-void UpdateGameOfLife(int seed)
+bool IsCellAlive(float3 cell)
 {
-    
+    return cell.x + cell.y + cell.z > 0;
 }
-// Shaderin tulisi sisältää funktio Game of Lifen solun päivitykselle.
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// FullTexture seed to initialize the simulation so that it is stable, stable meaning that the simulation no longer changes
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
 #pragma kernel InitFullTexture
 [numthreads(8, 8, 1)]
 void InitFullTexture(uint3 id : SV_DispatchThreadID)
@@ -68,8 +45,6 @@ void InitFullTexture(uint3 id : SV_DispatchThreadID)
         State1[id.xy] = CellColour;
     }
 }
-// FullTexture seed to initialize the simulation so that it is stable, stable meaning that the simulation no longer changes
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #pragma kernel InitRPentomino
 [numthreads(8, 8, 1)]
