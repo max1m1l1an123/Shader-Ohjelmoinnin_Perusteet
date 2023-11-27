@@ -67,3 +67,119 @@ void InitFullTexture(uint3 id : SV_DispatchThreadID)
 }
 // FullTexture seed to initialize the simulation so that it is stable, stable meaning that the simulation no longer changes
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#pragma kernel InitRPentomino
+[numthreads(8, 8, 1)]
+void InitRPentomino(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x == 256 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 255 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 256 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 257 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 256 && id.y == 257)
+        State1[id.xy] = CellColour;
+}
+
+
+#pragma kernel InitAcorn
+[numthreads(8, 8, 1)]
+void InitAcorn(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x == 256 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 257 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 254 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 258 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 259 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 254 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 253 && id.y == 257)
+        State1[id.xy] = CellColour;
+}
+
+
+#pragma kernel InitGun
+[numthreads(8, 8, 1)]
+void InitGun(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x == 256 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 255 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 254 && id.y == 254)
+        State1[id.xy] = CellColour;
+    if (id.x == 255 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 255 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 254 && id.y == 258)
+        State1[id.xy] = CellColour;
+    if (id.x == 253 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 252 && id.y == 259)
+        State1[id.xy] = CellColour;
+    if (id.x == 252 && id.y == 253)
+        State1[id.xy] = CellColour;
+    if (id.x == 251 && id.y == 259)
+        State1[id.xy] = CellColour;
+    if (id.x == 251 && id.y == 253)
+        State1[id.xy] = CellColour;
+    if (id.x == 250 && id.y == 258)
+        State1[id.xy] = CellColour;
+    if (id.x == 250 && id.y == 254)
+        State1[id.xy] = CellColour;
+    if (id.x == 249 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 249 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 249 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 240 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 240 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 239 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 239 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 259 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 259 && id.y == 254)
+        State1[id.xy] = CellColour;
+    if (id.x == 259 && id.y == 253)
+        State1[id.xy] = CellColour;
+    if (id.x == 260 && id.y == 255)
+        State1[id.xy] = CellColour;
+    if (id.x == 260 && id.y == 254)
+        State1[id.xy] = CellColour;
+    if (id.x == 260 && id.y == 253)
+        State1[id.xy] = CellColour;
+    if (id.x == 261 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 261 && id.y == 252)
+        State1[id.xy] = CellColour;
+    if (id.x == 263 && id.y == 257)
+        State1[id.xy] = CellColour;
+    if (id.x == 263 && id.y == 256)
+        State1[id.xy] = CellColour;
+    if (id.x == 263 && id.y == 252)
+        State1[id.xy] = CellColour;
+    if (id.x == 263 && id.y == 251)
+        State1[id.xy] = CellColour;
+    if (id.x == 273 && id.y == 254)
+        State1[id.xy] = CellColour;
+    if (id.x == 273 && id.y == 253)
+        State1[id.xy] = CellColour;
+    if (id.x == 274 && id.y == 254)
+        State1[id.xy] = CellColour;
+    if (id.x == 274 && id.y == 253)
+        State1[id.xy] = CellColour;
+}

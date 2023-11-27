@@ -11,20 +11,27 @@ public class FinalTask : MonoBehaviour
     [SerializeField] private RenderTexture blackUVTexture;
     [SerializeField] private RenderTexture whiteUVTexture;
 
-    [SerializeField] private int seed = 10;
+    
+    [SerializeField] private Seed seed = Seed.InitFullTexture; // seed ei ole numero vaan esim open teamsiin laittamat jännät scriptit on seedejä
     [SerializeField] private float updateIntervalSeconds = 2f;
     [SerializeField] private Stage currentStage;
 
-    private enum Stage
+    private enum Seed
     {
-        Stage1,
-        Stage2
+        InitFullTexture,
+        InitRPentomino,
+        InitAcorn,
+        InitGun
     }
 
     private static int _mainKernel;
     private static int _update1Kernel;
     private static int _update2Kernel;
     private static int _forEverySeedKernel;
+    private static int _initFullTextureKernel;
+    private static int _initRPentominoKernel;
+    private static int _initAcornKernel;
+    private static int _initGunKernel;
 
     private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
     private static readonly int UVMap = Shader.PropertyToID("UVMap");
@@ -55,23 +62,35 @@ public class FinalTask : MonoBehaviour
         int textureWidth = 512;
         int textureHeight = 512;
         // create 2 RenderTextures using default LDR settings, point filter and enableRandomWrite = true.
-        // Create black UV texture
-        blackUVTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGB32);
-        blackUVTexture.enableRandomWrite = true;
-        blackUVTexture.filterMode = FilterMode.Point;
-        blackUVTexture.Create();
-
+        #region implementation
         // Create white UV texture
         whiteUVTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGB32);
         whiteUVTexture.enableRandomWrite = true;
         whiteUVTexture.filterMode = FilterMode.Point;
         whiteUVTexture.Create();
+        
+        finalTaskShader.SetTexture(0, "White", whiteUVTexture);
+        // finalTaskShader.Dispatch(0,
+        
+        // Create black UV texture
+        blackUVTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGB32);
+        blackUVTexture.enableRandomWrite = true;
+        blackUVTexture.filterMode = FilterMode.Point;
+        blackUVTexture.Create();
+        #endregion implementation
+
+
 
         // find all kernels of Compute Shader
         _mainKernel = finalTaskShader.FindKernel("CSMain");
         _update1Kernel = finalTaskShader.FindKernel("Update1");
         _update2Kernel = finalTaskShader.FindKernel("Update2");
         _forEverySeedKernel = finalTaskShader.FindKernel("ForEverySeed");
+        _initFullTextureKernel = finalTaskShader.FindKernel("InitFullTextureKernel");
+        _initRPentominoKernel = finalTaskShader.FindKernel("InitRPentominoKernel");
+        _initAcornKernel = finalTaskShader.FindKernel("InitAcornKernel");
+        _initGunKernel = finalTaskShader.FindKernel("InitGunKernel");
+        
 
         // attach all kernels of Compute Shader the required textures and other fields that won't be updated during Update
         finalTaskShader.SetTexture(_mainKernel, BaseMap, finalTaskMaterial.mainTexture);
@@ -165,8 +184,28 @@ public class FinalTask : MonoBehaviour
     }
 
     // TODO: initialize the simulation using seed variable 
-    void InitializeSimulation(int seed)
+    void InitializeSimulation(Seed seed)
     {
+        switch (seed)
+        {
+            case Seed.InitFullTexture:
+                
+                break;
+            case Seed.InitRPentomino:
+                
+                break;
+            case Seed.InitAcorn:
+
+                break;
+            case Seed.InitGun:
+
+                break;
+            
+            default:
+                break;
+        }
+        
+        #region previous try
         // grid[5, 5] = true;
         // tiles[5, 5].GetComponent<MeshRenderer>().material.color = Color.red;
         // grid[3, 5] = true;
@@ -181,6 +220,7 @@ public class FinalTask : MonoBehaviour
         // tiles[1, 3].GetComponent<MeshRenderer>().material.color = Color.red;
         // grid[2, 2] = true;
         // tiles[2, 2].GetComponent<MeshRenderer>().material.color = Color.red;
+        #endregion previous try
     }
     
     // DONE:
