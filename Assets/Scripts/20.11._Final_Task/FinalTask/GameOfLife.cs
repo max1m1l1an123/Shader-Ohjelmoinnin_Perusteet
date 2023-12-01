@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
 
 public class GameOfLife : MonoBehaviour
 {
@@ -51,7 +50,6 @@ public class GameOfLife : MonoBehaviour
             filterMode = FilterMode.Point,
             enableRandomWrite = true
         };
-
         State1.Create();
 
         State2 = new RenderTexture(TexSize.x, TexSize.y, 0, DefaultFormat.LDR)
@@ -59,7 +57,6 @@ public class GameOfLife : MonoBehaviour
             filterMode = FilterMode.Point,
             enableRandomWrite = true
         };
-
         State2.Create();
 
         Update1Kernel = Simulator.FindKernel("Update1");
@@ -99,17 +96,6 @@ public class GameOfLife : MonoBehaviour
             default:
                 break;
         }
-        
-        Simulator.Dispatch(Seed switch
-        {
-            GameInit.InitRPentomino => Simulator.FindKernel("InitRPentomino"),
-            GameInit.InitAcorn => Simulator.FindKernel("InitAcorn"),
-            GameInit.InitGun => Simulator.FindKernel("InitGun"),
-            GameInit.InitFullTexture => Simulator.FindKernel("InitFullTexture"),
-                _ => 0
-        }, TexSize.x / 8, TexSize.y / 8, 1);
-        
-        
     }
 
     void Update()
