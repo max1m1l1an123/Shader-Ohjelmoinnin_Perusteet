@@ -10,7 +10,7 @@ cbuffer ColorBuffer : register(b0)
 }
 
 bool Simulator(float4 cell, uint2 texCoord, RWTexture2D<float4> State);
-
+bool IsCellAlive(float4 cell);
 
 #pragma kernel Update1
 [numthreads(8,8,1)]
@@ -38,38 +38,25 @@ int heightWidth = 512;
 
 bool Simulator(float4 cell, uint2 texCoord, RWTexture2D<float4> State)
 {
-    bool isAlive;
+    bool isAlive = false;
 
     
-    int live = 0; // count live neighbors
-    for (int i = id.x - 1; id.i <= id.x + 1; i++)
-    {
-        for (int j = id.y - 1; id.j <= id.y + 1; j++)
-        {
-            if (!(id.i == id.x & id.j == id.y) && id.i >= 0 && id.j >= 0 && id.i < heightWidth && id.j < heightWidth)
-            {
-                // current i,j is not x,y
-                if (IsCellAlive(id.ij) == true)
-                {
-                    live++;
-                }
-            }
-        }
-    }
+    int live = 0;
+    // live += IsCellAlive(State.Load());
 
     if (live < 2) // 1. Fewer than 2 live neighbours --> die
         {
         isAlive = false;
         }
-    else if (live < 4 && IsCellAlive(id.xy) == true) // 2. 2 or 3 live neighbours -> live on
+    else if (live < 4 && IsCellAlive(cell) == true) // 2. 2 or 3 live neighbours -> live on
         {
         isAlive = true;
         }
-    else if (live > 3 && IsCellAlive(id.xy) == true) // 3. more than 3 live neighbours -> die
+    else if (live > 3 && IsCellAlive(cell) == true) // 3. more than 3 live neighbours -> die
         {
         isAlive = false;
         }
-    else if (live == 3 && IsCellAlive(id.xy) == false) // 4. dead cell with 3 live neighbours -> rebirth
+    else if (live == 3 && IsCellAlive(cell) == false) // 4. dead cell with 3 live neighbours -> rebirth
         {
         isAlive = true;
         }
