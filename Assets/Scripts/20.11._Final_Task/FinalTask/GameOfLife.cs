@@ -45,6 +45,8 @@ public class GameOfLife : MonoBehaviour
 
     void Start()
     {
+        Simulator.SetVector(CellColour, CellCol);
+
         State1 = new RenderTexture(TexSize.x, TexSize.y, 0, DefaultFormat.LDR)
         {
             filterMode = FilterMode.Point,
@@ -101,7 +103,11 @@ public class GameOfLife : MonoBehaviour
     void Update()
     {
         if (Time.time < NextUpdate) return;
-        
+
+        if (IsState1) Simulator.Dispatch(Update1Kernel, TexSize.x / 8, TexSize.y / 8, 1);
+        else if (!IsState1) Simulator.Dispatch(Update2Kernel, TexSize.x / 8, TexSize.y / 8, 1);
+
+
         IsState1 = !IsState1;
         
         PlaneMaterial.SetTexture(BaseMap, IsState1 ? State1 : State2);

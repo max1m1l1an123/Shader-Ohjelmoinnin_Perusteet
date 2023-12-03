@@ -1,24 +1,83 @@
-// Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSMain
-
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
-float4 CellColour;
 RWTexture2D<float4> State1;
+RWTexture2D<float4> State2;
 
+Texture2D<float4> _BaseMap; // texture
 
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+cbuffer ColorBuffer : register(b0)
 {
+    float4 CellColour;
+    float4 TextureSize;
+}
+
+bool Simulator(float4 cell, uint2 texCoord, RWTexture2D<float4> State);
+
+
+#pragma kernel Update1
+[numthreads(8,8,1)]
+void Update1(uint3 id : SV_DispatchThreadID)
+{
+    uint2 texCoord = id.xy;
+    float4 cell = State1.Load(texCoord);
+    bool nextState = Simulator(cell, texCoord, State1);
+    State2[texCoord] = nextState ? CellColour : float4(0,0,0,1);
     
 }
 
-#pragma kernel Simulate
+#pragma kernel Update2
 [numthreads(8,8,1)]
-void Simulate()
+void Update2(uint3 id : SV_DispatchThreadID)
 {
-    
+    uint2 texCoord = id.xy;
+    float4 cell = State1.Load(texCoord);
+    bool nextState = Simulator(cell, texCoord, State1);
+    State2[texCoord] = nextState ? CellColour : float4(0,0,0,1);
 }
+
+int heightWidth = 512;
+
+
+bool Simulator(float4 cell, uint2 texCoord, RWTexture2D<float4> State)
+{
+    bool isAlive;
+
+    
+    int live = 0; // count live neighbors
+    for (int i = id.x - 1; id.i <= id.x + 1; i++)
+    {
+        for (int j = id.y - 1; id.j <= id.y + 1; j++)
+        {
+            if (!(id.i == id.x & id.j == id.y) && id.i >= 0 && id.j >= 0 && id.i < heightWidth && id.j < heightWidth)
+            {
+                // current i,j is not x,y
+                if (IsCellAlive(id.ij) == true)
+                {
+                    live++;
+                }
+            }
+        }
+    }
+
+    if (live < 2) // 1. Fewer than 2 live neighbours --> die
+        {
+        isAlive = false;
+        }
+    else if (live < 4 && IsCellAlive(id.xy) == true) // 2. 2 or 3 live neighbours -> live on
+        {
+        isAlive = true;
+        }
+    else if (live > 3 && IsCellAlive(id.xy) == true) // 3. more than 3 live neighbours -> die
+        {
+        isAlive = false;
+        }
+    else if (live == 3 && IsCellAlive(id.xy) == false) // 4. dead cell with 3 live neighbours -> rebirth
+        {
+        isAlive = true;
+        }
+    
+    return isAlive;
+}
+
+
 
 bool IsCellAlive(float4 cell)
 {
